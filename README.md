@@ -31,7 +31,11 @@ static:
 
 4. Generate your static site : `secret-admin.my-domain.tld/~static` or via the command `php bin/console static:generate`
 
+### Use it on a non-apache service (like github page)
 
+Edit your routes and add a `.html` suffix to `piedweb_cms_page`.
+
+Not test yet : Copy your data to the server with `rsync` and `--copy-links` for example.
 
 ## TODO
 

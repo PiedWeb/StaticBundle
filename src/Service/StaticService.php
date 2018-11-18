@@ -72,6 +72,7 @@ class StaticService
         $this->htaccessToStatic();
     }
 
+    // '.($this->params->has('app.static_dot_html') ? '
     protected function htaccessToStatic()
     {
         $htaccess =
