@@ -1,0 +1,27 @@
+{
+    "name": "piedweb/static-bundle",
+    "type": "symfony-bundle",
+    "description": "Static Page Generation Bundle for Pied Web CMS",
+    "keywords": [],
+    "homepage": "https://piedweb.com",
+    "license": "MIT",
+    "minimum-stability": "dev",
+    "require": {
+        "piedweb/cms-bundle": "dev-master"
+    },
+    "autoload": {
+        "psr-4": {
+            "PiedWeb\\StaticBundle\\": "src/"
+        },
+        "exclude-from-classmap": [
+            "/Tests/"
+        ]
+    },
+    "authors": [
+        {
+            "name": "Robin D.",
+            "email": "contact@robin-d.fr",
+            "homepage": "https://www.robin-d.fr/"
+        }
+    ]
+}

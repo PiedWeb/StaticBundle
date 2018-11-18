@@ -1,0 +1,10 @@
+services:
+
+
+# --------
+# Me
+# --------
+
+    PiedWeb\StaticBundle\Service\StaticService:
+        class: PiedWeb\StaticBundle\Service\StaticService
+        arguments: [ "@doctrine.orm.entity_manager", "@twig", "@parameter_bag", "%app.dir%"]

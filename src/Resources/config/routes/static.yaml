@@ -1,0 +1,4 @@
+piedweb_static_generate:
+    path:     /~static
+    controller: PiedWeb\StaticBundle\Controller\StaticController::generateStatic
+    methods:    [GET]
