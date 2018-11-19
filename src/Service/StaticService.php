@@ -53,7 +53,7 @@ class StaticService
         $this->twig = $twig;
         $this->params = $params;
         $this->webDir = $webDir;
-        $this->staticDir = $this->webDir.'/../static/';
+        $this->staticDir = $this->webDir.'/../static';
     }
 
     /**
@@ -75,6 +75,10 @@ class StaticService
     // '.($this->params->has('app.static_dot_html') ? '
     protected function htaccessToStatic()
     {
+        if (!$this->params->has('app.static_domain')) {
+            throw new \Exception('You need to configure (in your config/parameters.yaml) app.static_domain to generate the .htaccess');
+        }
+
         $htaccess =
 'RewriteEngine on
 RewriteBase /
@@ -149,11 +153,15 @@ Header set Cache-Control "max-age=14400, must-revalidate"
   AddOutputFilterByType DEFLATE text/plain
   AddOutputFilterByType DEFLATE text/xml
 </IfModule>';
-        $this->filesystem->dumpFile($this->staticDir.'.htaccess', $htaccess);
+        $this->filesystem->dumpFile($this->staticDir.'/.htaccess', $htaccess);
     }
 
     protected static function rmdir($dir)
     {
+        if (is_link($dir)) {
+            unlink($dir);
+        }
+
         if (!is_dir($dir)) {
             return false;
         }
@@ -165,15 +173,15 @@ Header set Cache-Control "max-age=14400, must-revalidate"
 
         while ($file = readdir($dir_handle)) {
             if ('.' != $file && '..' != $file) {
-                if (!is_dir($dirname.'/'.$file)) {
-                    unlink($dirname.'/'.$file);
+                if (!is_dir($dir.'/'.$file)) {
+                    unlink($dir.'/'.$file);
                 } else {
-                    self::rmdir($dirname.'/'.$file);
+                    self::rmdir($dir.'/'.$file);
                 }
             }
         }
         closedir($dir_handle);
-        rmdir($dirname);
+        rmdir($dir);
 
         return true;
     }
@@ -199,7 +207,7 @@ Header set Cache-Control "max-age=14400, must-revalidate"
                 continue;
             }
             if ('index.php' != $entry) {
-                $this->symlink($this->webDir.'/'.$entry, $this->staticDir.$entry);
+                $this->symlink($this->webDir.'/'.$entry, $this->staticDir.'/'.$entry);
             }
         }
         $dir->close();
@@ -213,7 +221,7 @@ Header set Cache-Control "max-age=14400, must-revalidate"
 
         foreach ($pages as $page) {
             $dump = $this->render($page);
-            $filepath = $this->staticDir.('' == $page->getRealSlug() ? 'index' : $page->getRealSlug()).'.html';
+            $filepath = $this->staticDir.'/'.('' == $page->getRealSlug() ? 'index' : $page->getRealSlug()).'.html';
             $this->filesystem->dumpFile($filepath, $dump);
         }
 

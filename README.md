@@ -6,7 +6,7 @@
 
 Generate Static Website powered by Pied Web CMS
 
-Initially dev to be use with [PiedWeb CMS](https://github.com/PiedWeb/CMS).
+Initially dev to be used with [PiedWeb CMS](https://github.com/PiedWeb/CMS).
 
 
 ## Installation
@@ -30,6 +30,12 @@ static:
    Protect your public folder with a .htpasswd to avoid duplicate content
 
 4. Generate your static site : `secret-admin.my-domain.tld/~static` or via the command `php bin/console static:generate`
+
+## Good to know
+
+- Don't work with i18n (will come)
+
+- The command generates an error if you use in your twig template `{{ app.request.getLocale() }}`
 
 ### Use it on a non-apache service (like github page)
 

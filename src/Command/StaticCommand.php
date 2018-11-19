@@ -5,9 +5,19 @@ namespace PiedWeb\StaticBundle\Command;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use PiedWeb\StaticBundle\Service\StaticService;
 
-class GreetCommand extends ContainerAwareCommand
+class StaticCommand extends ContainerAwareCommand
 {
+
+    private $static;
+
+    public function __construct(StaticService $static)
+    {
+        parent::__construct();
+        $this->static = $static;
+    }
+
     protected function configure()
     {
         $this
@@ -18,7 +28,7 @@ class GreetCommand extends ContainerAwareCommand
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $static->dump();
+        $this->static->dump();
         $output->writeln('statif folder generation succeeded');
     }
 }

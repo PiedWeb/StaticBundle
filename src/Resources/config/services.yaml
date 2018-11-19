@@ -1,10 +1,35 @@
 services:
 
-
 # --------
 # Me
 # --------
+    PiedWeb\StaticBundle\PiedWebStaticBundle: ~
+
+    PiedWeb\StaticBundle\:
+        autowire: true
+        resource: '../../../src/*'
+        exclude: '../../../src/{DependencyInjection,Entity,Migrations,Tests,Kernel.php}'
+
+    # controllers are imported separately to make sure services can be injected
+    # as action arguments even if you don't extend any base controller class
+    PiedWeb\StaticBundle\Controller\:
+        autowire: true
+        resource: '../../../src/Controller'
+        tags: ['controller.service_arguments']
+
+    piedweb.static:
+        arguments: [ "@doctrine.orm.entity_manager", "@twig", "@parameter_bag", "%app.dir%"]
+        class: PiedWeb\StaticBundle\Service\StaticService
 
     PiedWeb\StaticBundle\Service\StaticService:
-        class: PiedWeb\StaticBundle\Service\StaticService
-        arguments: [ "@doctrine.orm.entity_manager", "@twig", "@parameter_bag", "%app.dir%"]
+        alias: piedweb.static
+
+    piedweb.static_controller:
+        arguments: ['@piedweb.static']
+        class: PiedWeb\StaticBundle\Controller\StaticController
+        tags: ['controller.service_arguments']
+
+    piedweb.static_command:
+        arguments: ['@piedweb.static']
+        class: PiedWeb\StaticBundle\Command\StaticCommand
+        tags: ['console.command']
