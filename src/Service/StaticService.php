@@ -46,6 +46,8 @@ class StaticService
      */
     private $staticDir;
 
+    private $parser;
+
     public function __construct(EntityManagerInterface $em, Twig $twig, ParameterBagInterface $params, string $webDir)
     {
         $this->em = $em;
@@ -54,6 +56,7 @@ class StaticService
         $this->params = $params;
         $this->webDir = $webDir;
         $this->staticDir = $this->webDir.'/../static';
+        $this->parser = \WyriHaximus\HtmlCompress\Factory::construct();
     }
 
     /**
@@ -239,6 +242,6 @@ Header set Cache-Control "max-age=14400, must-revalidate"
     {
         $template = method_exists(Page::class, 'getTemplate') && null !== $page->getTemplate() ? $page->getTemplate() : $this->params->get('app.default_page_template');
 
-        return $this->twig->render($template, ['page' => $page]);
+        return $this->parser->compress($this->twig->render($template, ['page' => $page]));
     }
 }
