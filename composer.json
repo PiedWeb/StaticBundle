@@ -10,6 +10,12 @@
         "piedweb/cms-bundle": "dev-master",
         "wyrihaximus/html-compress": "^1.4"
     },
+    "require-dev": {
+        "symfony/test-pack": "dev-master",
+        "symfony/web-server-bundle": "dev-master",
+        "symfony/framework-bundle": "^4.1",
+        "symfony/yaml": "^4.1"
+    },
     "autoload": {
         "psr-4": {
             "PiedWeb\\StaticBundle\\": "src/"

@@ -100,13 +100,13 @@ RewriteRule ^([^\.]+)$ $1.html [NC,L]
 # Redirect www subfolder (or other) to domain.tld
 #---
 RewriteCond %{HTTP_HOST} ^(.*).'.$this->params->get('app.static_domain').'
-RewriteRule ^(.*)$ https://piedweb.com/$1 [L,R=301]
+RewriteRule ^(.*)$ https://'.$this->params->get('app.static_domain').'/$1 [L,R=301]
 
 
 #---
 # Redirect http to https
 #---
-RewriteCond %{HTTP_HOST} ^'.$this->params->get('app.static_domain').'$
+RewriteCond %{SERVER_PORT} 80
 RewriteRule ^(.*) https://'.$this->params->get('app.static_domain').'/$1  [QSA,L,R=301]
 
 #---
@@ -122,7 +122,7 @@ Header set Connection keep-alive
 # 4 HOURS
 Header set Cache-Control "max-age=14400, must-revalidate"
     # 480 weeks - 290304000
-    <filesMatch "\.(ico|pdf|flv|jpg|jpeg|png|gif|js|swf|css|eot|svg|ttf|woff|woff2)$">
+    <filesMatch "\.(ico|pdf|flv|jpg|JPG|jpeg|png|gif|js|swf|css|eot|svg|ttf|woff|woff2)$">
         Header set Cache-Control "max-age=290304000, public"
     </filesMatch>
     <FilesMatch "\.(gif|jpg|png|ico|css|js|pdf|txt)$">
