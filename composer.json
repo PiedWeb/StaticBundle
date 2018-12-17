@@ -5,7 +5,6 @@
     "keywords": [],
     "homepage": "https://piedweb.com",
     "license": "MIT",
-    "minimum-stability": "dev",
     "require": {
         "piedweb/cms-bundle": "dev-master",
         "wyrihaximus/html-compress": "^1.4"

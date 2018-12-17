@@ -20,11 +20,12 @@ composer require piedweb/static-bundle
 # Add route
 static:
     resource: '@PiedWebStaticBundle/Resources/config/routes/static.yaml'
+
 ```
 
 ## Usage
 
-1. Create a domain pointer on `%project_dir%/static` and add it to your `config/parameters.yaml` > `app.static_domain: mydomain.tld`
+1. Create a domain pointer on `%project_dir%/static` and add it to your `config/services.yaml` > `app.static_domain: mydomain.tld`
 
 2. (Optionnal) Create domain or subdomain manager  like `secret-admin.my-domain.tld` and point on your public folder
    Protect your public folder with a .htpasswd to avoid duplicate content

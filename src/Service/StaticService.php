@@ -12,7 +12,6 @@ namespace PiedWeb\StaticBundle\Service;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Filesystem\Filesystem;
-use PiedWeb\CMSBundle\Entity\Page;
 use Twig\Environment as Twig;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
@@ -233,14 +232,14 @@ Header set Cache-Control "max-age=14400, must-revalidate"
 
     protected function getPages()
     {
-        $qb = $this->em->getRepository(Page::class)->getQueryToFindPublished('p');
+        $qb = $this->em->getRepository($this->params->get('app.entity_page'))->getQueryToFindPublished('p');
 
         return $qb->getQuery()->getResult();
     }
 
     protected function render(Page $page)
     {
-        $template = method_exists(Page::class, 'getTemplate') && null !== $page->getTemplate() ? $page->getTemplate() : $this->params->get('app.default_page_template');
+        $template = method_exists($this->params->get('app.entity_page'), 'getTemplate') && null !== $page->getTemplate() ? $page->getTemplate() : $this->params->get('app.default_page_template');
 
         return $this->parser->compress($this->twig->render($template, ['page' => $page]));
     }
