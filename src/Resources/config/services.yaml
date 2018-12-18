@@ -18,7 +18,7 @@ services:
         tags: ['controller.service_arguments']
 
     piedweb.static:
-        arguments: [ "@doctrine.orm.entity_manager", "@twig", "@parameter_bag", "%app.dir%"]
+        arguments: [ "@doctrine.orm.entity_manager", "@twig", "@parameter_bag", "@request_stack", "@piedweb.page_canonical", "%app.dir%"]
         class: PiedWeb\StaticBundle\Service\StaticService
 
     PiedWeb\StaticBundle\Service\StaticService:

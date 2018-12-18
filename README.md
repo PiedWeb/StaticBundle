@@ -17,10 +17,9 @@ Via [Packagist](https://packagist.org/packages/piedweb/static-bundle) :
 # Get the Bundle
 composer require piedweb/static-bundle
 
-# Add route
+# Add route (facultative)
 static:
     resource: '@PiedWebStaticBundle/Resources/config/routes/static.yaml'
-
 ```
 
 ## Usage
@@ -32,17 +31,9 @@ static:
 
 4. Generate your static site : `secret-admin.my-domain.tld/~static` or via the command `php bin/console static:generate`
 
-## Good to know
-
-- Don't work with i18n (will come)
-
-- The command generates an error if you use in your twig template `{{ app.request.getLocale() }}`
-
 ### Use it on a non-apache service (like github page)
 
 Edit your routes and add a `.html` suffix to `piedweb_cms_page`.
-
-Not test yet : Copy your data to the server with `rsync` and `--copy-links` for example.
 
 ## TODO
 
@@ -55,8 +46,7 @@ Not test yet : Copy your data to the server with `rsync` and `--copy-links` for 
 
 Check coding standard before to commit :
 ```
-php-cs-fixer fix src --rules=@Symfony --verbose
-php-cs-fixer fix src --rules='{"array_syntax": {"syntax": "short"}}' --verbose
+php-cs-fixer fix src --rules=@Symfony --verbose && php-cs-fixer fix src --rules='{"array_syntax": {"syntax": "short"}}' --verbose
 ```
 
 ## License

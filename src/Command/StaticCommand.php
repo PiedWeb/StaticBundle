@@ -9,7 +9,6 @@ use PiedWeb\StaticBundle\Service\StaticService;
 
 class StaticCommand extends ContainerAwareCommand
 {
-
     private $static;
 
     public function __construct(StaticService $static)

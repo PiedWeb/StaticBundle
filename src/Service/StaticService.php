@@ -13,11 +13,13 @@ namespace PiedWeb\StaticBundle\Service;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Twig\Environment as Twig;
+use PiedWeb\CMSBundle\Entity\PageInterface as Page;
+use PiedWeb\CMSBundle\Service\PageCanonicalService as PageCanonical;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\Routing\Router;
 
-/**
- * Inspired by https://github.com/eko/FeedBundle.
- */
 class StaticService
 {
     /**
@@ -45,15 +47,33 @@ class StaticService
      */
     private $staticDir;
 
+    /**
+     * @var RequestStack
+     */
+    private $requesStack;
+
+    /**
+     * @var Router
+     */
+    private $pageCanonical;
+
     private $parser;
 
-    public function __construct(EntityManagerInterface $em, Twig $twig, ParameterBagInterface $params, string $webDir)
-    {
+    public function __construct(
+        EntityManagerInterface $em,
+        Twig $twig,
+        ParameterBagInterface $params,
+        RequestStack $requesStack,
+        PageCanonical $pageCanonical,
+        string $webDir
+    ) {
         $this->em = $em;
         $this->filesystem = new Filesystem();
         $this->twig = $twig;
         $this->params = $params;
+        $this->requesStack = $requesStack;
         $this->webDir = $webDir;
+        $this->pageCanonical = $pageCanonical;
         $this->staticDir = $this->webDir.'/../static';
         $this->parser = \WyriHaximus\HtmlCompress\Factory::construct();
     }
@@ -92,8 +112,12 @@ AddDefaultCharset UTF-8
 #---
 # Fix linking behavior
 #---
+RewriteCond %{REQUEST_FILENAME} !-d
 RewriteCond %{REQUEST_FILENAME} !-f
-RewriteRule ^([^\.]+)$ $1.html [NC,L]
+RewriteRule ^([^\.]+)$ $1.html [NC,L,END]
+
+RewriteCond %{REQUEST_URI} ^/?(.*).(html)$
+RewriteRule ^/?(.*).(html)$ /$1 [R=301,NC,L]
 
 #---
 # Redirect www subfolder (or other) to domain.tld
@@ -195,7 +219,10 @@ Header set Cache-Control "max-age=14400, must-revalidate"
             return symlink(readlink($target), $link);
         }
 
-        return symlink($target, $link);
+        return symlink(
+            $target,
+            $link
+        );
     }
 
     /**
@@ -209,7 +236,10 @@ Header set Cache-Control "max-age=14400, must-revalidate"
                 continue;
             }
             if ('index.php' != $entry) {
-                $this->symlink($this->webDir.'/'.$entry, $this->staticDir.'/'.$entry);
+                $this->symlink(
+                    str_replace($this->params->get('kernel.project_dir').'/', '../', $this->webDir.'/'.$entry),
+                    $this->staticDir.'/'.$entry
+                );
             }
         }
         $dir->close();
@@ -221,10 +251,30 @@ Header set Cache-Control "max-age=14400, must-revalidate"
     {
         $pages = $this->getPages();
 
-        foreach ($pages as $page) {
-            $dump = $this->render($page);
-            $filepath = $this->staticDir.'/'.('' == $page->getRealSlug() ? 'index' : $page->getRealSlug()).'.html';
-            $this->filesystem->dumpFile($filepath, $dump);
+        $this->params->get('app.locales');
+
+        $locales = explode('|', $this->params->get('app.locales'));
+
+        foreach ($locales as $locale) {
+            $this->filesystem->mkdir($this->staticDir.'/'.$locale);
+
+            foreach ($pages as $page) {
+                // set current locale to avoid twig error
+                $request = new Request();
+                $request->setLocale($locale);
+                $this->requesStack->push($request);
+
+                $route = $this->pageCanonical->generatePathForPage('' == $page->getRealSlug() ? 'index' : $page->getRealSlug(), $locale).'.html';
+                $filepath = $this->staticDir.$route;
+
+                $dump = $this->render($page);
+
+                if ('' == $page->getRealSlug() && $this->params->get('app.locale') == $locale) {
+                    $this->filesystem->dumpFile($this->staticDir.'/index.html', $dump);
+                } else {
+                    $this->filesystem->dumpFile($filepath, $dump);
+                }
+            }
         }
 
         return $this;
