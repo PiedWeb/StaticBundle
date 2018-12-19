@@ -14,22 +14,50 @@ Initially dev to be used with [PiedWeb CMS](https://github.com/PiedWeb/CMS).
 Via [Packagist](https://packagist.org/packages/piedweb/static-bundle) :
 
 ```
-# Get the Bundle
 composer require piedweb/static-bundle
-
-# Add route (facultative)
-static:
-    resource: '@PiedWebStaticBundle/Resources/config/routes/static.yaml'
 ```
 
 ## Usage
 
-1. Create a domain pointer on `%project_dir%/static` and add it to your `config/services.yaml` > `app.static_domain: mydomain.tld`
+On simple command line permit to generate your site in the `static` folder :
+```
+php bin/console static:generate
+```
 
-2. (Optionnal) Create domain or subdomain manager  like `secret-admin.my-domain.tld` and point on your public folder
-   Protect your public folder with a .htpasswd to avoid duplicate content
+Or you can do it via an HTTP request
+```
+# Add route in your config/routes.yml
+static:
+    resource: '@PiedWebStaticBundle/Resources/config/routes/static.yaml'
 
-4. Generate your static site : `secret-admin.my-domain.tld/~static` or via the command `php bin/console static:generate`
+And request /~static
+```
+
+### Exemple : Deploying on a shared APACHE hosting with a functionnal online backend :
+
+1. On a local installation of PiedWebCMS (and generate assets), install this bundle
+2. Create a domain pointer on `%project_dir%/static` and add it to your `config/services.yaml` > `app.static_domain: mydomain.tld`
+3. Create a second domain pointer for your admin on `/public`
+4. Change in `.env`  `APP_ENV = prod` and send online via rsync
+   `rsync -avz --delete-after --exclude="node_modules" -e 'ssh -p 5022' ./ user@my-domain.com:/`
+
+You can also
+- Add in the new `.htaccess` and create a `.htpasswd`
+  ```
+  AuthType Basic
+  AuthName "/"
+  AuthUserFile .htpasswd
+  Require valid-user
+  ```
+- Optimize
+   ```
+   composer install --no-dev --optimize-autoloader
+   composer dump-autoload --optimize --no-dev --classmap-authoritative
+   ```
+
+Resources :
+- https://medium.com/@runawaycoin/deploying-symfony-4-application-to-shared-hosting-with-just-ftp-access-e65d2c5e0e3d
+- https://symfony.com/doc/current/deployment.html
 
 ### Use it on a non-apache service (like github page)
 
