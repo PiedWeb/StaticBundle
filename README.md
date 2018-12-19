@@ -80,3 +80,9 @@ php-cs-fixer fix src --rules=@Symfony --verbose && php-cs-fixer fix src --rules=
 ## License
 
 MIT (see the LICENSE file for details)
+
+[![Latest Version](https://img.shields.io/github/tag/piedweb/staticbundle.svg?style=flat&label=release)](https://github.com/PiedWeb/StaticBundle/tags)
+[![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat)](https://github.com/PiedWeb/StaticBundle/LICENSE.md)
+[![Build Status](https://img.shields.io/travis/PiedWeb/StaticBundle/master.svg?style=flat)](https://travis-ci.org/PiedWeb/StaticBundle)
+[![Quality Score](https://img.shields.io/scrutinizer/g/piedweb/staticbundle.svg?style=flat)](https://scrutinizer-ci.com/g/piedweb/staticbundle)
+[![Total Downloads](https://img.shields.io/packagist/dt/piedweb/static-bundle.svg?style=flat)](https://packagist.org/packages/piedweb/static-bundle)
