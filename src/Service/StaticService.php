@@ -155,9 +155,9 @@ RewriteRule ^index\.html$ https://'.$this->params->get('app.static_domain').'/ [
 #---
 # Errors
 #---
-ErrorDocument 403 /_error.html
-ErrorDocument 404 /_error.html
-ErrorDocument 500 /_error.html
+ErrorDocument 403 /_error
+ErrorDocument 404 /_error
+ErrorDocument 500 /_error
 
 #---
 # Cache
