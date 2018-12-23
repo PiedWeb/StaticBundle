@@ -153,6 +153,13 @@ RewriteRule ^(.*) https://'.$this->params->get('app.static_domain').'/$1  [QSA,L
 RewriteRule ^index\.html$ https://'.$this->params->get('app.static_domain').'/ [QSA,L,R=301]
 
 #---
+# Errors
+#---
+ErrorDocument 403 /_error.html
+ErrorDocument 404 /_error.html
+ErrorDocument 500 /_error.html
+
+#---
 # Cache
 #---
 <IfModule mod_headers.c>
@@ -272,10 +279,9 @@ Header set Cache-Control "max-age=14400, must-revalidate"
 
         foreach ($locales as $locale) {
             $this->filesystem->mkdir($this->staticDir.'/'.$locale);
+            //$this->generateErrorPage($locale);
 
             foreach ($pages as $page) {
-                // RedirectPermanent /contact.php /contact-us.php
-
                 // set current locale to avoid twig error
                 $request = new Request();
                 $request->setLocale($locale);
@@ -295,14 +301,27 @@ Header set Cache-Control "max-age=14400, must-revalidate"
                 if ('' == $page->getRealSlug() && $this->params->get('app.locale') == $locale) {
                     $this->filesystem->dumpFile($this->staticDir.'/index.html', $dump);
                 } else {
-                    // check if it's in a folder
-                    // check if it's index of a folder
                     $this->filesystem->dumpFile($filepath, $dump);
                 }
             }
         }
 
+        // todo i18n error
+        $this->generateErrorPage();
+
         return $this;
+    }
+
+    protected function generateErrorPage($locale = null)
+    {
+        if (null !== $locale) {
+            $request = new Request();
+            $request->setLocale($locale);
+            $this->requesStack->push($request);
+        }
+
+        $dump = $this->parser->compress($this->twig->render('@Twig/Exception/error.html.twig'));
+        $this->filesystem->dumpFile($this->staticDir.(null !== $locale ? '/'.$locale : '').'/_error.html', $dump);
     }
 
     protected function getPages()
