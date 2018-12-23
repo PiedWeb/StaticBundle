@@ -59,6 +59,8 @@ class StaticService
 
     private $parser;
 
+    protected $addToHtaccess = '';
+
     public function __construct(
         EntityManagerInterface $em,
         Twig $twig,
@@ -110,8 +112,21 @@ Options -Indexes
 AddDefaultCharset UTF-8
 
 #---
+# Page Redirection
+#---
+'.$this->addToHtaccess.'
+
+#---
 # Fix linking behavior
 #---
+
+# First we redirect if requested uri end with a slash
+RewriteCond %{REQUEST_URI} (.*)/
+RewriteCond %{REQUEST_FILENAME}.html -f
+RewriteRule ^(.+)/$ /$1 [NC,L,R=301]
+
+RewriteCond %{REQUEST_FILENAME} ([a-zA-Z0-9][a-zA-Z0-9\-/]*$)
+RewriteCond %{REQUEST_FILENAME}.html -f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteRule ^([^\.]+)$ $1.html [NC,L,END]
@@ -259,19 +274,29 @@ Header set Cache-Control "max-age=14400, must-revalidate"
             $this->filesystem->mkdir($this->staticDir.'/'.$locale);
 
             foreach ($pages as $page) {
+                // RedirectPermanent /contact.php /contact-us.php
+
                 // set current locale to avoid twig error
                 $request = new Request();
                 $request->setLocale($locale);
                 $this->requesStack->push($request);
 
-                $route = $this->pageCanonical->generatePathForPage('' == $page->getRealSlug() ? 'index' : $page->getRealSlug(), $locale).'.html';
-                $filepath = $this->staticDir.$route;
+                $route = $this->pageCanonical->generatePathForPage('' == $page->getRealSlug() ? 'index' : $page->getRealSlug(), $locale);
+                $filepath = $this->staticDir.$route.'.html';
+
+                // check if it's a redirection
+                if (false !== $page->getRedirection()) {
+                    $this->addToHtaccess .= 'Redirect '.$page->getRedirectionCode().' '.$route.' '.$page->getRedirection().chr(10);
+                    continue;
+                }
 
                 $dump = $this->render($page);
 
                 if ('' == $page->getRealSlug() && $this->params->get('app.locale') == $locale) {
                     $this->filesystem->dumpFile($this->staticDir.'/index.html', $dump);
                 } else {
+                    // check if it's in a folder
+                    // check if it's index of a folder
                     $this->filesystem->dumpFile($filepath, $dump);
                 }
             }

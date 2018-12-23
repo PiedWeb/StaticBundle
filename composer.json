@@ -6,7 +6,6 @@
     "homepage": "https://piedweb.com",
     "license": "MIT",
     "require": {
-        "piedweb/cms-bundle": "^0.0",
         "wyrihaximus/html-compress": "^1.4"
     },
     "require-dev": {
