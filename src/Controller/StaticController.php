@@ -5,6 +5,7 @@ namespace PiedWeb\StaticBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use PiedWeb\StaticBundle\Service\StaticService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Symfony\Component\HttpFoundation\Response;
 
 class StaticController extends AbstractController
 {
@@ -15,7 +16,6 @@ class StaticController extends AbstractController
     {
         $static->dump();
 
-        echo 'statif folder generation succeeded';
-        die();
+        return new Response('<html><body><p>Static Generation Folder done with success !</p></body></html>');
     }
 }

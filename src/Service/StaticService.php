@@ -59,6 +59,8 @@ class StaticService
 
     private $parser;
 
+    private $params;
+
     protected $addToHtaccess = '';
 
     public function __construct(
