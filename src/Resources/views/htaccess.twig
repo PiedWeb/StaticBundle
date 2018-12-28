@@ -2,6 +2,7 @@ RewriteEngine on
 RewriteBase /
 
 Options -Indexes
+DirectorySlash Off
 
 AddDefaultCharset UTF-8
 
@@ -17,36 +18,36 @@ AddDefaultCharset UTF-8
 #---
 
 # First we redirect if requested uri end with a slash
-RewriteCond %{REQUEST_URI} (.*)/
-RewriteCond %{REQUEST_FILENAME}.html -f
-RewriteRule ^(.+)/$ /$1 [NC,L,R=301]
+RewriteCond %{REQUEST_URI} ^/(.*)/$
+RewriteCond %{DOCUMENT_ROOT}/%1.html -f
+RewriteRule ^(.+)/$ /$1 [NC,L,R=301,END]
 
 RewriteCond %{REQUEST_FILENAME} ([a-zA-Z0-9][a-zA-Z0-9\-/]*$)
 RewriteCond %{REQUEST_FILENAME}.html -f
-RewriteCond %{REQUEST_FILENAME} !-d
-RewriteCond %{REQUEST_FILENAME} !-f
+#RewriteCond %{REQUEST_FILENAME} !-d
+#RewriteCond %{REQUEST_FILENAME} !-f
 RewriteRule ^([^\.]+)$ $1.html [NC,L,END]
 
 RewriteCond %{REQUEST_URI} ^/?(.*).(html)$
-RewriteRule ^/?(.*).(html)$ /$1 [R=301,NC,L]
+RewriteRule ^/?(.*).(html)$ /$1 [R=301,NC,L,END]
 
 #---
 # Redirect www subfolder (or other) to domain.tld
 #---
 RewriteCond %{HTTP_HOST} ^(.*).{{ domain }}
-RewriteRule ^(.*)$ https://{{ domain }}/$1 [L,R=301]
+RewriteRule ^(.*)$ https://{{ domain }}/$1 [L,R=301,END]
 
 
 #---
 # Redirect http to https
 #---
 RewriteCond %{SERVER_PORT} 80
-RewriteRule ^(.*) https://{{ domain }}/$1  [QSA,L,R=301]
+RewriteRule ^(.*) https://{{ domain }}/$1  [QSA,L,R=301,END]
 
 #---
 # Redirect index.html to /
 #---
-RewriteRule ^index\.html$ https://{{ domain }}/ [QSA,L,R=301]
+RewriteRule ^index\.html$ https://{{ domain }}/ [QSA,L,R=301,END]
 
 #---
 # Errors
