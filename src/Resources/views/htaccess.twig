@@ -6,6 +6,23 @@ DirectorySlash Off
 
 AddDefaultCharset UTF-8
 
+#---
+# Redirect www subfolder (or other) to domain.tld
+#---
+RewriteCond %{HTTP_HOST} ^(.*).{{ domain }}
+RewriteRule ^(.*)$ https://{{ domain }}/$1 [L,R=301,END]
+
+#---
+# Redirect http to https
+#---
+RewriteCond %{SERVER_PORT} 80
+RewriteRule ^(.*) https://{{ domain }}/$1  [QSA,L,R=301,END]
+
+#---
+# Redirect index.html to /
+#---
+RewriteRule ^index\.html$ https://{{ domain }}/ [QSA,L,R=301,END]
+
 {% if redirections is not empty %}
 #---
 # Page Redirection
@@ -31,23 +48,6 @@ RewriteRule ^([^\.]+)$ $1.html [NC,L,END]
 RewriteCond %{REQUEST_URI} ^/?(.*).(html)$
 RewriteRule ^/?(.*).(html)$ /$1 [R=301,NC,L,END]
 
-#---
-# Redirect www subfolder (or other) to domain.tld
-#---
-RewriteCond %{HTTP_HOST} ^(.*).{{ domain }}
-RewriteRule ^(.*)$ https://{{ domain }}/$1 [L,R=301,END]
-
-
-#---
-# Redirect http to https
-#---
-RewriteCond %{SERVER_PORT} 80
-RewriteRule ^(.*) https://{{ domain }}/$1  [QSA,L,R=301,END]
-
-#---
-# Redirect index.html to /
-#---
-RewriteRule ^index\.html$ https://{{ domain }}/ [QSA,L,R=301,END]
 
 #---
 # Errors
