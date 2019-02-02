@@ -17,10 +17,12 @@
     "autoload": {
         "psr-4": {
             "PiedWeb\\StaticBundle\\": "src/"
-        },
-        "exclude-from-classmap": [
-            "/Tests/"
-        ]
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "PiedWeb\\StaticBundle\\": "tests"
+        }
     },
     "authors": [
         {

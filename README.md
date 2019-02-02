@@ -4,6 +4,13 @@
 
 # Static Bundle
 
+[![Latest Version](https://img.shields.io/github/tag/PiedWeb/StaticBundle.svg?style=flat&label=release)](https://github.com/PiedWeb/StaticBundle/tags)
+[![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat)](LICENSE)
+[![Build Status](https://img.shields.io/travis/PiedWeb/StaticBundle/master.svg?style=flat)](https://travis-ci.org/PiedWeb/StaticBundle)
+[![Quality Score](https://img.shields.io/scrutinizer/g/PiedWeb/StaticBundle.svg?style=flat)](https://scrutinizer-ci.com/g/PiedWeb/StaticBundle)
+[![Code Coverage](https://img.shields.io/scrutinizer/coverage/g/PiedWeb/StaticBundle.svg?style=flat)](https://scrutinizer-ci.com/g/PiedWeb/StaticBundle/code-structure)
+[![Total Downloads](https://img.shields.io/packagist/dt/piedweb/static-bundle.svg?style=flat)](https://packagist.org/packages/piedweb/static-bundle)
+
 Generate Static Website powered by Pied Web CMS
 
 Initially dev to be used with [PiedWeb CMS](https://github.com/PiedWeb/CMS).
@@ -67,22 +74,22 @@ Edit your routes and add a `.html` suffix to `piedweb_cms_page`.
 
 - test
 
-## Contributors
+## Contributing
 
-* [Robin](https://www.robin-d.fr/) / [Pied Web](https://piedweb.com)
-* ...
+Please see [contributing](https://dev.piedweb.com/contributing)
 
-Check coding standard before to commit :
-```
-php-cs-fixer fix src --rules=@Symfony --verbose && php-cs-fixer fix src --rules='{"array_syntax": {"syntax": "short"}}' --verbose
-```
+## Credits
+
+- [PiedWeb](https://piedweb.com)
+- [All Contributors](https://github.com/PiedWeb/:package_skake/graphs/contributors)
 
 ## License
 
-MIT (see the LICENSE file for details)
+The MIT License (MIT). Please see [License File](LICENSE) for more information.
 
-[![Latest Version](https://img.shields.io/github/tag/piedweb/staticbundle.svg?style=flat&label=release)](https://github.com/PiedWeb/StaticBundle/tags)
-[![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat)](https://github.com/PiedWeb/StaticBundle/LICENSE.md)
+[![Latest Version](https://img.shields.io/github/tag/PiedWeb/StaticBundle.svg?style=flat&label=release)](https://github.com/PiedWeb/StaticBundle/tags)
+[![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat)](LICENSE)
 [![Build Status](https://img.shields.io/travis/PiedWeb/StaticBundle/master.svg?style=flat)](https://travis-ci.org/PiedWeb/StaticBundle)
-[![Quality Score](https://img.shields.io/scrutinizer/g/piedweb/staticbundle.svg?style=flat)](https://scrutinizer-ci.com/g/piedweb/staticbundle)
+[![Quality Score](https://img.shields.io/scrutinizer/g/PiedWeb/StaticBundle.svg?style=flat)](https://scrutinizer-ci.com/g/PiedWeb/StaticBundle)
+[![Code Coverage](https://img.shields.io/scrutinizer/coverage/g/PiedWeb/StaticBundle.svg?style=flat)](https://scrutinizer-ci.com/g/PiedWeb/StaticBundle/code-structure)
 [![Total Downloads](https://img.shields.io/packagist/dt/piedweb/static-bundle.svg?style=flat)](https://packagist.org/packages/piedweb/static-bundle)
