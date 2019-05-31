@@ -21,13 +21,13 @@ class StaticCommand extends Command
     {
         $this
             ->setName('static:generate')
-            ->setDescription('Generate statif folder for PiedWeb CMS')
+            ->setDescription('Generate static version  for your website')
         ;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $this->static->dump();
-        $output->writeln('statif folder generation succeeded');
+        $output->writeln('Static version generation succeeded.');
     }
 }

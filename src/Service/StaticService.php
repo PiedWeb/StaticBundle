@@ -44,7 +44,7 @@ class StaticService
     private $requesStack;
 
     /**
-     * @var Router
+     * @var \PiedWeb\CMSBundle\Service\PageCanonicalService
      */
     private $pageCanonical;
 
@@ -80,7 +80,7 @@ class StaticService
     public function dump()
     {
         if (!method_exists($this->filesystem, 'dumpFile')) {
-            throw new \RuntimeException('Method dumpFile() is not available on your Filesystem component version, you should upgrade it.');
+            throw new \RuntimeException('Method dumpFile() is not available. Upgrade your Filesystem.');
         }
 
         $this->rmdir($this->staticDir);
@@ -92,7 +92,7 @@ class StaticService
     protected function htaccessToStatic()
     {
         if (!$this->params->has('app.static_domain')) {
-            throw new \Exception('You need to configure (in your config/parameters.yaml) app.static_domain to generate the .htaccess');
+            throw new \Exception('Before, you need to configure (in config/services.yaml) app.static_domain.');
         }
 
         $htaccess = $this->twig->render('@PiedWebStatic/htaccess.twig', [
@@ -171,8 +171,6 @@ class StaticService
     {
         $pages = $this->getPages();
 
-        $this->params->get('app.locales');
-
         $locales = explode('|', $this->params->get('app.locales'));
 
         foreach ($locales as $locale) {
@@ -182,25 +180,25 @@ class StaticService
             foreach ($pages as $page) {
                 // set current locale to avoid twig error
                 $request = new Request();
-                $request->setLocale($locale);
+                $request->setLocale($locale); //$this->params->get('app.locale');
+
                 $this->requesStack->push($request);
 
-                $route = $this->pageCanonical->generatePathForPage('' == $page->getRealSlug() ? 'index' : $page->getRealSlug(), $locale);
+                $slug  = '' == $page->getRealSlug() ? 'index' : $page->getRealSlug();
+                $route = $this->pageCanonical->generatePathForPage($slug, $locale);
                 $filepath = $this->staticDir.$route.'.html';
 
                 // check if it's a redirection
                 if (false !== $page->getRedirection()) {
-                    $this->redirections .= 'Redirect '.$page->getRedirectionCode().' '.$route.' '.$page->getRedirection().chr(10);
+                    $this->redirections .= 'Redirect ';
+                    $this->redirections .= $page->getRedirectionCode().' '.$route.' '.$page->getRedirection();
+                    $this->redirections .= PHP_EOL;
                     continue;
                 }
 
                 $dump = $this->render($page);
 
-                if ('' == $page->getRealSlug() && $this->params->get('app.locale') == $locale) {
-                    $this->filesystem->dumpFile($this->staticDir.'/index.html', $dump);
-                } else {
-                    $this->filesystem->dumpFile($filepath, $dump);
-                }
+                $this->filesystem->dumpFile($filepath, $dump);
             }
         }
 
@@ -231,7 +229,11 @@ class StaticService
 
     protected function render(Page $page)
     {
-        $template = method_exists($this->params->get('app.entity_page'), 'getTemplate') && null !== $page->getTemplate() ? $page->getTemplate() : $this->params->get('app.default_page_template');
+        $template =
+            method_exists($this->params->get('app.entity_page'), 'getTemplate') && null !== $page->getTemplate()
+                ? $page->getTemplate()
+                : $this->params->get('app.default_page_template')
+        ;
 
         return $this->parser->compress($this->twig->render($template, ['page' => $page]));
     }

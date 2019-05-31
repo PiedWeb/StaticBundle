@@ -16,6 +16,6 @@ class StaticController extends AbstractController
     {
         $static->dump();
 
-        return new Response('<html><body><p>Static Generation Folder done with success !</p></body></html>');
+        return new Response('<html><body><p>Static Website Updated With Success !</p></body></html>');
     }
 }
