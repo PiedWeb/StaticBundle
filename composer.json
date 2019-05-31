@@ -11,8 +11,8 @@
     "require-dev": {
         "symfony/test-pack": "dev-master",
         "symfony/web-server-bundle": "dev-master",
-        "symfony/framework-bundle": "^4.1",
-        "symfony/yaml": "^4.1"
+        "symfony/framework-bundle": "^4.2",
+        "symfony/yaml": "^4.2"
     },
     "autoload": {
         "psr-4": {
