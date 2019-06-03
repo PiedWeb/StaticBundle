@@ -6,41 +6,6 @@ DirectorySlash Off
 
 AddDefaultCharset UTF-8
 
-# ---
-# Block Useless traffic
-# ---
-
-RewriteCond %{HTTP_USER_AGENT} ^.*(aesop_com_spiderman|alexibot|backweb|bandit|batchftp|bigfoot) [NC,OR]
-RewriteCond %{HTTP_USER_AGENT} ^.*(black.?hole|blackwidow|blowfish|botalot|buddy|builtbottough|bullseye) [NC,OR]
-RewriteCond %{HTTP_USER_AGENT} ^.*(cheesebot|cherrypicker|chinaclaw|collector|copier|copyrightcheck) [NC,OR]
-RewriteCond %{HTTP_USER_AGENT} ^.*(cosmos|crescent|curl|custo|da|diibot|disco|dittospyder|dragonfly) [NC,OR]
-RewriteCond %{HTTP_USER_AGENT} ^.*(drip|easydl|ebingbong|ecatch|eirgrabber|emailcollector|emailsiphon) [NC,OR]
-RewriteCond %{HTTP_USER_AGENT} ^.*(emailwolf|erocrawler|exabot|eyenetie|filehound|flashget|flunky) [NC,OR]
-RewriteCond %{HTTP_USER_AGENT} ^.*(frontpage|getright|getweb|go.?zilla|go-ahead-got-it|gotit|grabnet) [NC,OR]
-RewriteCond %{HTTP_USER_AGENT} ^.*(grafula|harvest|hloader|hmview|httplib|httrack|humanlinks|ilsebot) [NC,OR]
-RewriteCond %{HTTP_USER_AGENT} ^.*(infonavirobot|infotekies|intelliseek|interget|iria|jennybot|jetcar) [NC,OR]
-RewriteCond %{HTTP_USER_AGENT} ^.*(joc|justview|jyxobot|kenjin|keyword|larbin|leechftp|lexibot|lftp|libweb) [NC,OR]
-RewriteCond %{HTTP_USER_AGENT} ^.*(likse|linkscan|linkwalker|lnspiderguy|lwp|magnet|mag-net|markwatch) [NC,OR]
-RewriteCond %{HTTP_USER_AGENT} ^.*(mata.?hari|memo|microsoft.?url|midown.?tool|miixpc|mirror|missigua) [NC,OR]
-RewriteCond %{HTTP_USER_AGENT} ^.*(mister.?pix|moget|mozilla.?newt|nameprotect|navroad|backdoorbot|nearsite) [NC,OR]
-RewriteCond %{HTTP_USER_AGENT} ^.*(net.?vampire|netants|netcraft|netmechanic|netspider|nextgensearchbot) [NC,OR]
-RewriteCond %{HTTP_USER_AGENT} ^.*(attach|nicerspro|nimblecrawler|npbot|octopus|offline.?explorer) [NC,OR]
-RewriteCond %{HTTP_USER_AGENT} ^.*(offline.?navigator|openfind|outfoxbot|pagegrabber|papa|pavuk) [NC,OR]
-RewriteCond %{HTTP_USER_AGENT} ^.*(pcbrowser|php.?version.?tracker|pockey|propowerbot|prowebwalker) [NC,OR]
-RewriteCond %{HTTP_USER_AGENT} ^.*(psbot|pump|queryn|recorder|realdownload|reaper|reget|true_robot) [NC,OR]
-RewriteCond %{HTTP_USER_AGENT} ^.*(repomonkey|rma|internetseer|sitesnagger|siphon|slysearch|smartdownload) [NC,OR]
-RewriteCond %{HTTP_USER_AGENT} ^.*(snake|snapbot|snoopy|sogou|spacebison|spankbot|spanner|sqworm|superbot) [NC,OR]
-RewriteCond %{HTTP_USER_AGENT} ^.*(superhttp|surfbot|asterias|suzuran|szukacz|takeout|teleport) [NC,OR]
-RewriteCond %{HTTP_USER_AGENT} ^.*(telesoft|the.?intraformant|thenomad|tighttwatbot|titan|urldispatcher) [NC,OR]
-RewriteCond %{HTTP_USER_AGENT} ^.*(turingos|turnitinbot|urly.?warning|vacuum|vci|voideye|whacker) [NC,OR]
-RewriteCond %{HTTP_USER_AGENT} ^.*(libwww-perl|widow|wisenutbot|wwwoffle|xaldon|xenu|zeus|zyborg|anonymouse) [NC,OR]
-RewriteCond %{HTTP_USER_AGENT} ^.*web(zip|emaile|enhancer|fetch|go.?is|auto|bandit|clip|copier|master|reaper|sauger|site.?quester|whack) [NC,OR]
-RewriteCond %{HTTP_USER_AGENT} ^.*(craftbot|download|extract|stripper|sucker|ninja|clshttp|webspider|leacher|collector|grabber|webpictures) [NC,OR]
-RewriteCond %{HTTP_USER_AGENT} ^.*(rogerbot|mj12bot|ahrefsbot|surveybot|linkody|updownerbot|ia_archiver|archive-fr.com|blexbot) [NC,OR]
-RewriteCond %{HTTP_USER_AGENT} ^.*(webmeup|spbot|nerdybot|urlmetriques|mozbot|dotbot|gigabot|sitebot|semrush).* [NC]
-RewriteCond %{HTTP_USER_AGENT} ^.*(linguee|barkrowler|buck|apache-http|aream|spuhex|domaincrawler|domainstatsbot|nutch) [NC]
-RewriteRule . - [F,L]
-
 #---
 # Redirect www subfolder (or other) to domain.tld
 #---
