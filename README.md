@@ -61,6 +61,12 @@ You can also
    composer install --no-dev --optimize-autoloader
    composer dump-autoload --optimize --no-dev --classmap-authoritative
    ```
+- Block Search engine bots access to your dynamic site (avoid duplicate content)
+  In your `public/.htaccess` :
+   ```
+   RewriteCond %{HTTP_USER_AGENT} ^.*(googlebot|bingbot|baiduspider) [NC]
+   RewriteRule . - [F,L]
+   ```
 
 Resources :
 - https://medium.com/@runawaycoin/deploying-symfony-4-application-to-shared-hosting-with-just-ftp-access-e65d2c5e0e3d
