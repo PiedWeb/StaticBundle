@@ -180,9 +180,12 @@ class StaticService
             foreach ($pages as $page) {
                 // set current locale to avoid twig error
                 $request = new Request();
-                $request->setLocale($locale); //$this->params->get('app.locale');
-
+                $request->setLocale($locale);
                 $this->requesStack->push($request);
+
+
+                $page->setTranslatableLocale($locale);
+                $this->em->refresh($page);
 
                 $slug  = '' == $page->getRealSlug() ? 'index' : $page->getRealSlug();
                 $route = $this->pageCanonical->generatePathForPage($slug, $locale);
