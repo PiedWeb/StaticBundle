@@ -192,9 +192,10 @@ class StaticService
                 $request->setLocale($locale);
                 $this->requesStack->push($request);
 
-
                 $page->setTranslatableLocale($locale);
                 $this->em->refresh($page);
+
+                $this->translator->setLocale($locale);
 
                 $slug  = '' == $page->getRealSlug() ? 'index' : $page->getRealSlug();
                 $route = $this->pageCanonical->generatePathForPage($slug, $locale);
