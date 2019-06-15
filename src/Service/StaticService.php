@@ -48,6 +48,12 @@ class StaticService
      */
     private $pageCanonical;
 
+
+    /**
+     * @var TranslatorInterface
+     */
+    private $translator;
+
     private $parser;
 
     private $params;
@@ -60,6 +66,7 @@ class StaticService
         ParameterBagInterface $params,
         RequestStack $requesStack,
         PageCanonical $pageCanonical,
+        TranslatorInterface $translator,
         string $webDir
     ) {
         $this->em = $em;
@@ -69,6 +76,7 @@ class StaticService
         $this->requesStack = $requesStack;
         $this->webDir = $webDir;
         $this->pageCanonical = $pageCanonical;
+        $this->translator = $translator;
         $this->staticDir = $this->webDir.'/../static';
         $this->parser = \WyriHaximus\HtmlCompress\Factory::construct();
     }
