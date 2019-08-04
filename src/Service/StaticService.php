@@ -155,7 +155,8 @@ class StaticService
     }
 
     /**
-     * We create symlink for all assets.
+     * We create symlink for all assets
+     * and we copy feed.xml, sitemap.xml, robots.txt (avoid new page not yet generated try to be indexed by bots)
      */
     protected function assetsToStatic(): self
     {
@@ -164,7 +165,12 @@ class StaticService
             if ('.' == $entry || '..' == $entry) {
                 continue;
             }
-            if ('index.php' != $entry) {
+            if (in_array($entry, ['robots.txt', 'feed.xml', 'sitemap.xml', 'sitemap.txt'])) {
+                copy(
+                    str_replace($this->params->get('kernel.project_dir').'/', '../', $this->webDir.'/'.$entry),
+                    $this->staticDir.'/'.$entry
+                );
+            } elseif ('index.php' != $entry) {
                 $this->symlink(
                     str_replace($this->params->get('kernel.project_dir').'/', '../', $this->webDir.'/'.$entry),
                     $this->staticDir.'/'.$entry
