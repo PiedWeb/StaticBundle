@@ -1,0 +1,6 @@
+#---
+# Admin
+#---
+admin:
+    static:
+        updated: Site actualisé avec succès...

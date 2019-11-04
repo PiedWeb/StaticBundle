@@ -40,6 +40,15 @@ static:
 And request /~static
 ```
 
+You can add a link in the admin dashboard (`config/packages/sonata_admin.yaml`) :
+
+```
+sonata_admin:
+    [...]
+                    - route:        piedweb_static_generate
+                      label:        Actualiser
+```
+
 ### Exemple : Deploying on a shared APACHE hosting with a functionnal online backend :
 
 1. On a local installation of PiedWebCMS (and generate assets), install this bundle
