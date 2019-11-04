@@ -96,6 +96,13 @@ class StaticService
         $this->pageToStatic();
         $this->assetsToStatic();
         $this->htaccessToStatic();
+        $this->mediaToDownload();
+    }
+
+    protected function mediaToDownload()
+    {
+        $this->filesystem->mkdir($this->staticDir.'/download/');
+        symlink($this->webDir.'/../media', $this->webDir.'/../static/download/media');
     }
 
     protected function htaccessToStatic()
