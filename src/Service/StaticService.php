@@ -12,8 +12,16 @@ use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Routing\Router;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
+use PiedWeb\CMSBundle\EventListener\MediaCacheGeneratorTrait;
+use Liip\ImagineBundle\Imagine\Cache\CacheManager;
+use Liip\ImagineBundle\Imagine\Data\DataManager;
+use Liip\ImagineBundle\Imagine\Filter\FilterManager;
+
 class StaticService
 {
+
+    use MediaCacheGeneratorTrait;
+
     /**
      * @var EntityManagerInterface
      */
@@ -61,6 +69,10 @@ class StaticService
 
     protected $redirections = '';
 
+    private $cacheManager;
+    private $dataManager;
+    private $filterManager;
+
     public function __construct(
         EntityManagerInterface $em,
         Twig $twig,
@@ -68,6 +80,11 @@ class StaticService
         RequestStack $requesStack,
         PageCanonical $pageCanonical,
         TranslatorInterface $translator,
+
+        CacheManager $cacheManager,
+        DataManager $dataManager,
+        FilterManager $filterManager,
+
         string $webDir
     ) {
         $this->em = $em;
@@ -78,6 +95,9 @@ class StaticService
         $this->webDir = $webDir;
         $this->pageCanonical = $pageCanonical;
         $this->translator = $translator;
+        $this->cacheManager = $cacheManager;
+        $this->dataManager = $dataManager;
+        $this->filterManager = $filterManager;
         $this->staticDir = $this->webDir.'/../static';
         $this->parser = \WyriHaximus\HtmlCompress\Factory::construct();
     }
@@ -186,6 +206,15 @@ class StaticService
         }
         $dir->close();
 
+        /** create download symlink **/
+        if ( !file_exists($this->staticDir.'/download')) {
+            mkdir($this->staticDir.'/download');
+        }
+
+        $this->symlink(
+                    str_replace($this->params->get('kernel.project_dir').'/' '../', $this->webDir.'/../media'),
+                    $this->staticDir.'/download/media'
+                );
         return $this;
     }
 

@@ -18,7 +18,17 @@ services:
         tags: ['controller.service_arguments']
 
     piedweb.static:
-        arguments: [ "@doctrine.orm.entity_manager", "@twig", "@parameter_bag", "@request_stack", "@piedweb.page_canonical", "@translator", "%app.dir%"]
+        arguments:
+            - "@doctrine.orm.entity_manager"
+            - "@twig"
+            - "@parameter_bag"
+            - "@request_stack"
+            - "@piedweb.page_canonical"
+            - "@translator"
+            - '@liip_imagine.cache.manager'
+            - '@liip_imagine.data.manager'
+            - '@liip_imagine.filter.manager'
+            - "%app.dir%"
         class: PiedWeb\StaticBundle\Service\StaticService
 
     PiedWeb\StaticBundle\Service\StaticService:
