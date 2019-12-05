@@ -2,8 +2,8 @@
 
 namespace PiedWeb\StaticBundle;
 
-use Symfony\Component\HttpKernel\Bundle\Bundle;
 use PiedWeb\StaticBundle\DependencyInjection\PiedWebStaticExtension;
+use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 class PiedWebStaticBundle extends Bundle
 {

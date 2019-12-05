@@ -1,25 +1,23 @@
 <?php
+
 namespace PiedWeb\StaticBundle\Service;
 
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\Filesystem\Filesystem;
-use Twig\Environment as Twig;
-use PiedWeb\CMSBundle\Entity\PageInterface as Page;
-use PiedWeb\CMSBundle\Service\PageCanonicalService as PageCanonical;
-use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Component\Routing\Router;
-use Symfony\Contracts\Translation\TranslatorInterface;
-
-use PiedWeb\CMSBundle\EventListener\MediaCacheGeneratorTrait;
 use Liip\ImagineBundle\Imagine\Cache\CacheManager;
 use Liip\ImagineBundle\Imagine\Data\DataManager;
 use Liip\ImagineBundle\Imagine\Filter\FilterManager;
+use PiedWeb\CMSBundle\Entity\PageInterface as Page;
+use PiedWeb\CMSBundle\EventListener\MediaCacheGeneratorTrait;
+use PiedWeb\CMSBundle\Service\PageCanonicalService as PageCanonical;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
+use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Contracts\Translation\TranslatorInterface;
+use Twig\Environment as Twig;
 
 class StaticService
 {
-
     use MediaCacheGeneratorTrait;
 
     /**
@@ -56,7 +54,6 @@ class StaticService
      * @var \PiedWeb\CMSBundle\Service\PageCanonicalService
      */
     private $pageCanonical;
-
 
     /**
      * @var TranslatorInterface
@@ -119,12 +116,6 @@ class StaticService
         $this->mediaToDownload();
     }
 
-    protected function mediaToDownload()
-    {
-        $this->filesystem->mkdir($this->staticDir.'/download/');
-        symlink($this->webDir.'/../media', $this->webDir.'/../static/download/media');
-    }
-
     protected function htaccessToStatic()
     {
         if (!$this->params->has('app.static_domain')) {
@@ -183,7 +174,7 @@ class StaticService
 
     /**
      * We create symlink for all assets
-     * and we copy feed.xml, sitemap.xml, robots.txt (avoid new page not yet generated try to be indexed by bots)
+     * and we copy feed.xml, sitemap.xml, robots.txt (avoid new page not yet generated try to be indexed by bots).
      */
     protected function assetsToStatic(): self
     {
@@ -206,16 +197,13 @@ class StaticService
         }
         $dir->close();
 
-        /** create download symlink **/
-        if ( !file_exists($this->staticDir.'/download')) {
-            mkdir($this->staticDir.'/download');
-        }
-
-        $this->symlink(
-                    str_replace($this->params->get('kernel.project_dir').'/' '../', $this->webDir.'/../media'),
-                    $this->staticDir.'/download/media'
-                );
         return $this;
+    }
+
+    protected function mediaToDownload()
+    {
+        $this->filesystem->mkdir($this->staticDir.'/download/');
+        symlink($this->webDir.'/../media', $this->webDir.'/../static/download/media');
     }
 
     protected function pageToStatic(): self
@@ -239,7 +227,7 @@ class StaticService
 
                 $this->translator->setLocale($locale);
 
-                $slug  = '' == $page->getRealSlug() ? 'index' : $page->getRealSlug();
+                $slug = '' == $page->getRealSlug() ? 'index' : $page->getRealSlug();
                 $route = $this->pageCanonical->generatePathForPage($slug, $locale);
                 $filepath = $this->staticDir.$route.'.html';
 

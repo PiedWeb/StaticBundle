@@ -2,10 +2,9 @@
 
 namespace PiedWeb\StaticBundle\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use PiedWeb\StaticBundle\Service\StaticService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use Symfony\Component\HttpFoundation\Response;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class StaticController extends AbstractController
 {
