@@ -77,11 +77,9 @@ class StaticService
         RequestStack $requesStack,
         PageCanonical $pageCanonical,
         TranslatorInterface $translator,
-
         CacheManager $cacheManager,
         DataManager $dataManager,
         FilterManager $filterManager,
-
         string $webDir
     ) {
         $this->em = $em;
@@ -200,10 +198,21 @@ class StaticService
         return $this;
     }
 
+
     protected function mediaToDownload()
     {
         $this->filesystem->mkdir($this->staticDir.'/download/');
-        symlink($this->webDir.'/../media', $this->webDir.'/../static/download/media');
+        symlink($this->webDir.'/../media', $this->staticDir.'/download/media');
+
+        /* create download symlink *
+        if (!file_exists($this->staticDir.'/download')) {
+            mkdir($this->staticDir.'/download');
+        }
+        $this->symlink(
+            str_replace($this->params->get('kernel.project_dir').'/', '../', $this->webDir.'/../media'),
+            $this->staticDir.'/download/media'
+        );
+        /**/
     }
 
     protected function pageToStatic(): self
