@@ -9,7 +9,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class StaticController extends AbstractController
 {
     /**
-     * @Security("is_granted('ROLE_ADMIN')")
+     * @Security("is_granted('ROLE_EDITOR')")
      */
     public function generateStatic(StaticService $static)
     {
