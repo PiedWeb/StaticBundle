@@ -23,6 +23,11 @@ RewriteRule ^(.*) https://{{ domain }}/$1  [QSA,L,R=301,END]
 #---
 RewriteRule ^index\.(html|php|aspx|cfm|html)$ https://{{ domain }}/ [QSA,L,R=301,END]
 
+#---
+# Redirect old media to new (patch for site updated from PiedWeb/CMS v0.0.5
+#---
+RewriteRule ^media/(default|xs|thumb|xl|...)/media(.*)$ /media/$1$2 [QSA,L,R=301,END]
+
 {% if redirections is not empty %}
 #---
 # Page Redirection
