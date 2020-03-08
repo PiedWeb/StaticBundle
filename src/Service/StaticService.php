@@ -249,8 +249,12 @@ class StaticService
                 }
 
                 $dump = $this->render($page);
-
                 $this->filesystem->dumpFile($filepath, $dump);
+
+                if ($page->getChildrenPages()->count() > 0) {
+                    $dump = $this->renderFeed($page);
+                    $this->filesystem->dumpFile(preg_replace('/.html$/', '.xml', $filepath), $dump);
+                }
             }
         }
 
@@ -286,6 +290,13 @@ class StaticService
                 ? $page->getTemplate()
                 : $this->params->get('app.default_page_template')
         ;
+
+        return $this->parser->compress($this->twig->render($template, ['page' => $page]));
+    }
+
+    protected function renderFeed(Page $page)
+    {
+        $template = '@PiedWebCMS/page/rss.xml.twig';
 
         return $this->parser->compress($this->twig->render($template, ['page' => $page]));
     }
