@@ -198,7 +198,6 @@ class StaticService
         return $this;
     }
 
-
     protected function mediaToDownload()
     {
         $this->filesystem->mkdir($this->staticDir.'/download/');
@@ -219,47 +218,45 @@ class StaticService
     {
         $pages = $this->getPages();
 
+        // todo i18n error
         $locales = explode('|', $this->params->get('app.locales'));
 
         foreach ($locales as $locale) {
             $this->filesystem->mkdir($this->staticDir.'/'.$locale);
-            //$this->generateErrorPage($locale);
-
-            foreach ($pages as $page) {
-                // set current locale to avoid twig error
-                $request = new Request();
-                $request->setLocale($locale);
-                $this->requesStack->push($request);
-
-                $page->setTranslatableLocale($locale);
-                $this->em->refresh($page);
-
-                $this->translator->setLocale($locale);
-
-                $slug = '' == $page->getRealSlug() ? 'index' : $page->getRealSlug();
-                $route = $this->pageCanonical->generatePathForPage($slug, $locale);
-                $filepath = $this->staticDir.$route.'.html';
-
-                // check if it's a redirection
-                if (false !== $page->getRedirection()) {
-                    $this->redirections .= 'Redirect ';
-                    $this->redirections .= $page->getRedirectionCode().' '.$route.' '.$page->getRedirection();
-                    $this->redirections .= PHP_EOL;
-                    continue;
-                }
-
-                $dump = $this->render($page);
-                $this->filesystem->dumpFile($filepath, $dump);
-
-                if ($page->getChildrenPages()->count() > 0) {
-                    $dump = $this->renderFeed($page);
-                    $this->filesystem->dumpFile(preg_replace('/.html$/', '.xml', $filepath), $dump);
-                }
-            }
+            $this->generateErrorPage($locale);
         }
 
-        // todo i18n error
-        $this->generateErrorPage();
+        foreach ($pages as $page) {
+            // set current locale to avoid twig error
+            $request = new Request();
+            $request->setLocale($page->getLocale());
+            $this->requesStack->push($request);
+
+            $page->setTranslatableLocale($page->getLocale());
+            $this->em->refresh($page);
+
+            $this->translator->setLocale($page->getLocale());
+
+            $slug = '' == $page->getRealSlug() ? 'index' : $page->getRealSlug();
+            $route = $this->pageCanonical->generatePathForPage($slug, $locale);
+            $filepath = $this->staticDir.$route.'.html';
+
+            // check if it's a redirection
+            if (false !== $page->getRedirection()) {
+                $this->redirections .= 'Redirect ';
+                $this->redirections .= $page->getRedirectionCode().' '.$route.' '.$page->getRedirection();
+                $this->redirections .= PHP_EOL;
+                continue;
+            }
+
+            $dump = $this->render($page);
+            $this->filesystem->dumpFile($filepath, $dump);
+
+            if ($page->getChildrenPages()->count() > 0) {
+                $dump = $this->renderFeed($page);
+                $this->filesystem->dumpFile(preg_replace('/.html$/', '.xml', $filepath), $dump);
+            }
+        }
 
         return $this;
     }
@@ -285,15 +282,12 @@ class StaticService
 
     protected function render(Page $page)
     {
-        $template =
-            method_exists($this->params->get('app.entity_page'), 'getTemplate') && null !== $page->getTemplate()
-                ? $page->getTemplate()
-                : $this->params->get('app.default_page_template')
-        ;
+        $template = $this->params->get('app.default_page_template');
 
         return $this->parser->compress($this->twig->render($template, ['page' => $page]));
     }
 
+    // todo i18n feed ...
     protected function renderFeed(Page $page)
     {
         $template = '@PiedWebCMS/page/rss.xml.twig';
