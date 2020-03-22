@@ -238,7 +238,7 @@ class StaticService
             $this->translator->setLocale($page->getLocale());
 
             $slug = '' == $page->getRealSlug() ? 'index' : $page->getRealSlug();
-            $route = $this->pageCanonical->generatePathForPage($slug, $locale);
+            $route = $this->pageCanonical->generatePathForPage($slug);
             $filepath = $this->staticDir.$route.'.html';
 
             // check if it's a redirection
