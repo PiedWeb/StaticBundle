@@ -68,10 +68,10 @@ Header set Connection keep-alive
 # 4 HOURS
 Header set Cache-Control "max-age=14400, must-revalidate"
     # 480 weeks - 290304000
-    <filesMatch "\.(ico|pdf|flv|jpg|JPG|jpeg|png|gif|js|swf|css|eot|svg|ttf|woff|woff2)$">
+    <filesMatch "\.(ico|pdf|flv|jpg|JPG|jpeg|png|gif|js|swf|css|eot|svg|ttf|woff|woff2|webp)$">
         Header set Cache-Control "max-age=290304000, public"
     </filesMatch>
-    <FilesMatch "\.(gif|jpg|png|ico|css|js|pdf|txt)$">
+    <FilesMatch "\.(gif|jpg|png|ico|css|js|pdf|txt|webp)$">
         Header append Cache-Control "public"
     </FilesMatch>
 </IfModule>
