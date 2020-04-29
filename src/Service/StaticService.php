@@ -18,7 +18,7 @@ use Twig\Environment as Twig;
 
 class StaticService
 {
-    use MediaCacheGeneratorTrait;
+    //use MediaCacheGeneratorTrait;
 
     /**
      * @var EntityManagerInterface
